@@ -1,6 +1,6 @@
 # Build configuration for the deployment validation service
 # Runs standard build/test/validate lifecycle
-# monitoring-improvement-v12
+# monitoring-improvement-v13
 
 .PHONY: all build test clean validate setup
 
@@ -12,7 +12,7 @@ setup:
 	@npm install 2>/dev/null || true
 
 validate: validate-env validate-network validate-creds
-	@echo "All validation checks complete."
+	@echo "All validation checks completed."
 
 validate-env:
 	@echo "Checking build environment..."
