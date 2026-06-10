@@ -31,21 +31,24 @@ class ConfigParser:
         except json.JSONDecodeError as e:
             raise ValueError(f"Invalid configuration: {e}")
 
-    def parse_with_defaults(self, raw: str, defaults: Dict[str, Any] = None) -> Dict[str, Any]:
+     def parse_with_defaults(self, raw: str, defaults: Dict[str, Any] = None) -> Dict[str, Any]:
         """Parse configuration with default values merged in.
 
         The defaults are applied first, then overridden by parsed values.
         This ensures all required keys are present even if the config
         file is incomplete.
-
-        Args:
-            raw: JSON string to parse
-            defaults: Default values to merge with parsed config
-
-        Returns:
-            Merged configuration dictionary
         """
         base = defaults or {}
         parsed = self.parse(raw)
         base.update(parsed)
         return base
+
+    def parse_file(self, filepath: str, defaults: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Parse configuration from a file path with defaults."""
+        with open(filepath, 'r') as f:
+            raw = f.read()
+        return self.parse_with_defaults(raw, defaults)
+
+    def validate_required_keys(self, config: Dict[str, Any], required: list) -> list:
+        """Return list of missing required keys."""
+        return [k for k in required if k not in config]
