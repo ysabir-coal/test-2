@@ -11,7 +11,7 @@ class ConfigParser:
 
     Example usage:
         parser = ConfigParser()
-        config = parser.parse('{"region": "us-east-1", "stage": "prod"}')
+        config = parser.parse('{"region": "us-east-1", "stage": "gamma"}')
     """
 
     def parse(self, raw: str) -> Dict[str, Any]:
